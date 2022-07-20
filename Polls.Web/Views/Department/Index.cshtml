@@ -1,0 +1,83 @@
+﻿@using Polls.Domain.ViewModel.Department
+@model List<DepartmentIndexViewModel>
+
+@{
+    ViewData["Title"] = "Department Index";
+}
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="mr-3 mb-3 pb-2" style="border-bottom:solid 3px white; max-width:max-content">
+                <h2>Department</h2>
+            </div>
+            <partial name="PartialView/_Index" model="new CreateDepartmentViewModel()"/>
+            <div class="mt-3 table-responsive" id="all">
+                <table class="table table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NAME</th>
+                            <th>COURSES</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            string modid = "fc" + item.Id.ToString();
+                            string tabid = "tab" + item.Id.ToString();
+                            string basebtn = "basebtn" + item.Id.ToString();
+                            string baserow = "baserow" + item.Id.ToString();
+                            string inputdiv = "inputdiv" + item.Id.ToString();
+                            
+                            <tr id="@baserow">
+                                <td>@item.Id</td>
+                                <td id="@tabid">@item.Name</td>
+                                <td><a asp-action="Index" asp-controller="Course" asp-route-departmentId="@item.Id" class="btn btn-outline-dark">Courses : @item.CoursesCount</a></td>
+                                <td>
+                                    <button class="btn btn-inverse-primary mr-1 basebtn" data-bs-target="#@modid" data-bs-toggle="modal">Edit</button>
+                                    <div class="modal fade" id="@modid" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel1">Update Department Name</h5>
+                                                    <button
+                                                        type="button"
+                                                        class="btn-close"
+                                                        data-bs-dismiss="modal"
+                                                        aria-label="Close"
+                                                    ></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col mb-3">
+                                                            <label for="nameBasic" class="form-label">Name</label>   
+                                                            <input type="text" class="form-control" id="@inputdiv" placeholder="Enter Name" />
+                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                    <button type="button" data-textid="@tabid" data-id="@item.Id" data-newname="@inputdiv" data-div="@inputdiv" class="btn btn-primary editbtn" data-bs-dismiss="modal">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-inverse-danger deletebtn" data-row="@baserow" data-id="@item.Id">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="PartialScript/_Index" />
+}

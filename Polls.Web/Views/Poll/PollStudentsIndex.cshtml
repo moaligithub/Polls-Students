@@ -1,0 +1,44 @@
+﻿@using Polls.Domain.ViewModel.Poll
+@model List<PollStudentViewModel>
+
+@{
+    ViewData["Title"] = "Polls";
+}
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="mr-3 mb-3 pb-2" style="border-bottom:solid 3px white; max-width:max-content">
+                <h2>Students Polls (@Model.Count())</h2>
+            </div>
+            <div class="mt-3 table-responsive" id="all">
+                <table class="table table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>COURSE NAME</th>
+                            <th>STUDENT ID</th>
+                            <th>STUDENT NAME</th>
+                            <th>STUDENT DEPARTMENT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {        
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@ViewBag.CourseName</td>
+                                <td>@item.StudentId</td>
+                                <td>@item.StudentName</td>
+                                <td>@item.StudentDepartment</td>
+                                <td>
+                                    <a class="btn btn-primary mr-1" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

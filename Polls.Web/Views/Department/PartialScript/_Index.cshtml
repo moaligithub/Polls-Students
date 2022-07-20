@@ -1,0 +1,56 @@
+﻿<script>
+    $(".editbtn").click(function() {
+        var id = $(this).data("id");
+        var textId = "#" + $(this).data("textid");
+        var div = "#" + $(this).data("div");
+        var nameId = "#" + $(this).data("newname");
+
+        $.ajax({
+            url: '/api/Department/' + id + "/" + $(nameId).val(),
+            type: 'put',
+            data: { newName: $(nameId).val() },
+            success: function() {
+                $(textId).empty();
+                $(textId).html($(nameId).val());
+                toastr.success("Update Successfully", "Success");
+            },
+            error: function() { 
+                toastr.error("Update failed", "Failed");
+            }
+        });
+    });
+
+    $(".deletebtn").click(function() {
+        var id = $(this).data("id");
+        var rowid = "#" + $(this).data("row");
+
+        bootbox.confirm({
+            message: "Are you sure you want to Delete this Department?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if (result) { 
+                    $.ajax({
+                        url: '/api/Department/' + id,
+                        type: 'delete',
+                        success: function() { 
+                            $(rowid).fadeOut(500);
+                            toastr.success("Delete Successfully", "Success");
+                        },
+                        error: function() {
+                            toastr.error("Delete Failed", "Error");
+                        }
+                    });
+                }
+            }
+        });
+    });
+</script>

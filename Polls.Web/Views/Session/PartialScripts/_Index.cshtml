@@ -1,0 +1,77 @@
+﻿<script>
+    $(document).ready(function() {            
+        var courseId = $("#CourseId").val();
+        if (courseId == 0) {
+            $.ajax({
+                url:'/api/Course', 
+                type:"get", 
+                success: function(Result) {
+                    var options = `<option value="">Select Course..</option>`;
+                    for (var i = 0; i < Result.length; i++)
+                    {
+                        options += `<option value="${Result[i].id}">${Result[i].title}</option>`;
+                    }
+                    $("#drop").empty();
+                    $("#drop").prop('hidden', false);
+                    $("#drop").prop('required', true);
+                    $("#drop").append(options);
+                    $("#CourseId").remove();
+                },
+                error: function() {
+                    alert("Error");
+                }
+            });
+        }
+
+        $.ajax({
+            url:'/api/Instructor', 
+            type:"get", 
+            success: function(Result) {
+                var options = `<option value="">Select Instructor..</option>`;
+                for (var i = 0; i < Result.length; i++)
+                {
+                    options += `<option value="${Result[i].id}">${Result[i].firstName} ${Result[i].lastName}</option>`;
+                }
+                $("#insdrop").empty();
+                $("#insdrop").append(options);
+            },
+            error: function() {
+                alert("Error");
+            }
+        });
+    });
+
+    $(".deletebtn").click(function() {
+        var id = $(this).data("id");
+        var rowid = "#" + $(this).data("row");
+
+        bootbox.confirm({
+            message: "Are you sure you want to Delete this Session?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if (result) { 
+                    $.ajax({
+                        url: '/api/Session/' + id,
+                        type: 'delete',
+                        success: function() {
+                            $(rowid).fadeOut(500);
+                            toastr.success("Delete Successfully", "Success");
+                        },
+                        error: function() {
+                            toastr.error("Delete Failed", "Error");
+                        }
+                    });
+                }
+            }
+        });
+    });
+</script>

@@ -1,0 +1,16 @@
+﻿@using Polls.Domain.ViewModel.Instructor
+@model CreateInstructorReview
+
+<form asp-action="EditReview" asp-controller="Instructor" enctype="multipart/form-data" method="post">
+    <div class="w-100 mt-3 mb-3">
+        <textarea class="form-control w-100" rows="7" asp-for="@Model.Description" placeholder="Description..."></textarea>
+    </div>
+    <div style="width-max-content;float:left">
+        <input type="submit" class="btn btn-success" value="Update"/>
+    </div>
+    <div id="rate" style="float:right">
+
+    </div>
+    <input type="hidden" asp-for="@Model.InstructorId"/>
+    <input type="hidden" id="reviewinp" value="@Model.Review" asp-for="@Model.Review"/>
+</form>

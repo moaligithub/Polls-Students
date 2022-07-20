@@ -1,0 +1,24 @@
+﻿<script>
+    var questionText = "";
+    var count = 0;
+    var maxCount = $("#hid").val();
+
+    $("#InputId").change(function() {
+        questionText = $(this).val();
+    });
+            
+    $("#btninput").click(function() {
+        var countPlus = count + 1;
+        var inid = "#" + "inp" + count;
+        var labid = "#" + "lab" + count;
+        $(inid).prop('value', questionText).prop('hidden', false);
+        $(labid).prop('hidden', false).html(`Question : ${countPlus}`)
+                
+        $(".cuestionCount").html(`Questions : ${countPlus}`);
+        count++;   
+        if (count >= maxCount) {
+            $("#addmodal").prop('disabled', true);
+            toastr.info(`only ${maxCount} questions can be added`, "Info");
+        }
+    });        
+</script>

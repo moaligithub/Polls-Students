@@ -1,0 +1,176 @@
+﻿@using Polls.Domain.ViewModel.Instructor
+@model InstructorReviewsViewModel
+
+@{
+    ViewData["Title"] = "Instructor Rating";
+}
+
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+        <h2 style="font-family: 'Times New Roman', Times, serif;">Instructor Reviews</h2>
+    </div>
+</section>
+
+@if(Model.StudentReview ==  null)
+{
+    <input type="hidden" id="stid" value="0">
+}
+else
+{
+    <input type="hidden" id="stid" value="1">
+    <input type="hidden" id="reviewvalue" value="@Model.StudentReview.Review"/>
+}
+
+<section id="portfolio-details" class="portfolio-details">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-lg-4">
+                <div class="portfolio-info">
+                    <center>
+                        @{
+                            string stringReview = new string(Model.TotalReview.ToString().Take(3).ToArray());
+                            string review = stringReview.Length < 3 ? stringReview + ".0" : stringReview;
+                        }
+                        <ul style="font-size:125%;font-family: 'Times New Roman', Times, serif;">
+                            @if (Model.ProfilePicture != null)
+                            {
+                                <li><img src="data:image/*;base64,@Convert.ToBase64String(Model.ProfilePicture)" style="border-radius: 5%;width: 200px;" alt=""></li>
+                            }
+                            else
+                            {
+                                <li><img src="~/Site/assets/img/team/team-3.jpg" style="border-radius: 5%;width: 200px;" alt=""></li>
+                            }
+                        </ul>
+                        <ul>
+                            <li><h2>@Model.FirstName @Model.LastName</h2></li>
+                            <li>Software Developer</li>
+                            <li><strong>Total Review</strong>: @review</li>
+                        </ul>
+                        <hr />
+                        <h4 style="font-family: 'Times New Roman', Times, serif;">Contact:</h4>
+                        <ul style="line-height:80%">
+                            <li>
+                                <a href="@Model.Contact.Twitter"><i class="bi bi-twitter" style="font-size:30px;margin-right:20px"></i></a>
+                                <a href="@Model.Contact.Facebook"><i class="bi bi-facebook" style="font-size:30px;margin-right:20px"></i></a>
+                                <a href="@Model.Contact.LinkedIn"><i class="bi bi-linkedin" style="font-size:30px;margin-right:20px"></i></a>
+                                <a href="mailto:@Model.Contact.Email"><i class="bx bx-envelope" style="font-size:30px"></i></a>
+                            </li>
+                        </ul>
+                    </center>
+                </div>
+            </div>   
+            <div class="col-lg-8">
+                <div class="portfolio-info">
+                    <div class="swiper-wrapper align-items-center">
+                        <div class="w-100">
+                            <div style="width:max-content">
+                                <h3 style="font-family: 'Times New Roman', Times, serif;">Your Rating</h3>     
+                            </div>
+                            @if(Model.StudentReview == null)
+                            {
+                                <partial name="PartialView/_AddReview" model="new CreateInstructorReview
+                                { 
+                                    InstructorId = Model.Id,
+                                }" />
+                            }
+                            else
+                            {
+                                <partial name="PartialView/_EditReview" model="new CreateInstructorReview
+                                {   
+                                    InstructorId = Model.Id, 
+                                    Description = Model.StudentReview.Description, 
+                                    Review = Model.StudentReview.Review,
+                                }" 
+                                />
+                            }
+                        </div>
+
+                    </div>
+                <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="swiper-pagination"></div>
+</section>
+
+@if(Model.InstructorReviews.Count() != 0)
+{
+    <section id="testimonials" class="testimonials section-bg">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h2>Reviews</h2>
+                <p>Check our Reviews</p>
+            </div>
+
+            <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+                <div class="swiper-wrapper">
+                    @foreach (var item in Model.InstructorReviews)
+                    {
+                        <div class="swiper-slide">
+                            <div class="testimonial-wrap">
+                                <div class="testimonial-item">
+                                    <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                                    <h3>@item.StudentId</h3>
+                                    @{ int count = @item.Review; }
+
+                                    @for (int i = 0; i < count; i++)
+                                    {
+                                        <span style="font-size:150%;color:goldenrod">&starf;</span>
+                                    }
+
+                                    @for (int k = 0; k < 5 - count; k++)
+                                    {
+                                        <span style="font-size:150%;color:darkslategray">&star;</span>
+                                    }
+                                    <p>
+                                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                    @item.Description
+                                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>                
+                    }
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+        </div>
+    </section>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function() {
+            var stId = $("#stid").val();
+        
+            if(stId == 1)
+            {
+                var reviewValue = $("#reviewvalue").val();
+                var items = ``;
+                for (var i = 5; i > 0; i--)
+                {
+                    if (reviewValue == i) {
+                        items += `<input type="radio" id="star${i}" checked class="inp" name="rate" value="${i}" />
+                                    <label for="star${i}" title="text">${i} stars</label>`;
+                    }
+                    else{
+                        items += `<input type="radio" id="star${i}" class="inp" name="rate" value="${i}" />
+                                    <label for="star${i}" title="text">${i} stars</label>`;
+                    }
+                }
+
+                $("#rate").html(items);
+            }
+
+            $(".inp").click(function() {
+                var reviewValue = $(this).val();
+                $("#reviewinp").prop('value', reviewValue);
+            });
+        });
+    </script>
+}

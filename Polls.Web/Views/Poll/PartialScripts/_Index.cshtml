@@ -1,0 +1,36 @@
+﻿<script>
+    $(".deletebtn").click(function() {
+        var Id = $(this).data("id");
+        var rowid = "#" + $(this).data("row");
+           
+        bootbox.confirm({
+            message: "Are you sure you want to Delete this Questions?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if (result) { 
+                    $.ajax({
+                        url: '/api/Questions/' + Id,
+                        type: 'delete',
+                        data: { courseId: Id },
+                        success: function() {
+                            $(rowid).fadeOut(500);
+                            toastr.success("Delete Successfully", "Success");
+                        },
+                        error: function() {
+                            toastr.error("Delete Failed", "Error");
+                        }
+                    });
+                }
+            }
+        });        
+    });
+</script>

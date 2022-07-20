@@ -1,0 +1,33 @@
+﻿@using Polls.Domain.ViewModel.Course
+@model List<CourseHomeViewModel>
+
+@{
+    ViewData["Title"] = "All Courses";
+}
+
+<section id="services" class="services mt-5">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>Courses</h2>
+            <p>Check our Courses</p>
+        </div>
+
+
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bxl-dribbble"></i></div>
+                        <h4><a asp-action="Details" asp-controller="Course" asp-route-id="@item.Id">@item.Title</a></h4>
+                        <h6>Views (@item.Views)</h6>
+                        <p>@item.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</section>

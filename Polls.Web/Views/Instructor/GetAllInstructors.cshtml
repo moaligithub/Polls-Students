@@ -1,0 +1,54 @@
+﻿@using Polls.Domain.ViewModel.Instructor
+@model List<InstructorHomeViewModel>
+
+@{
+    ViewData["Title"] = "All Courses";
+}
+
+<section id="team" class="team section-bg mt-5">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>Instructors</h2>
+            <p>Check our Instructors</p>
+        </div>
+
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-xl-3 col-lg-4 col-md-6" data-wow-delay="0.2s">
+                    <div class="member" data-aos="zoom-in" data-aos-delay="300">
+                        @if(item.ProfilePicture != null)
+                        {
+                            <img src="data:image/*;base64,@Convert.ToBase64String(item.ProfilePicture)" class="img-fluid" alt="">
+                        }
+                        else
+                        {
+                            <img src="~/Site/assets/img/team/team-3.jpg" class="img-fluid" alt="">
+                        }
+                        <div class="member-info">
+                        <div class="member-info-content">
+                            <h4>@item.FirstName @item.LastName</h4>
+                            <span>@item.JobTitle</span>
+                            @{
+                                string stringReview = new string(item.TotalReview.ToString().Take(3).ToArray());
+                                string review = stringReview.Length < 3 ? stringReview + ".0" : stringReview;
+                            }
+                            <span style="font-size: 100%;color: yellow;display:inline">&starf; @review</span>
+                        </div>
+                        <div class="social">
+                            <a href="@item.Contact.Twitter"><i class="bi bi-twitter"></i></a>
+                            <a href="@item.Contact.Facebook"><i class="bi bi-facebook"></i></a>
+                            <a href="mailto:@item.Contact.Email"><i class="bx bx-envelope"></i></a>
+                            <a href="@item.Contact.LinkedIn"><i class="bi bi-linkedin"></i></a>
+                            <a asp-action="Review" asp-controller="Instructor" asp-route-instructorId="@item.Id"><span style="font-size: 200%;color: white;display:inline">&starf;</span></a>
+                        </div>
+                        </div>
+                    </div>
+                </div>   
+            }
+        </div>
+
+    </div>
+</section>

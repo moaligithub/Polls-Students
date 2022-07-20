@@ -1,0 +1,11 @@
+﻿@using Polls.Domain.ViewModel.Department
+@model CreateDepartmentViewModel
+
+<form asp-action="Create" method="post">
+    <div class="input-group col-lg-12 mb-2">
+        <input type="text" id="add" required class="form-control" asp-for="@Model.Name" placeholder="Write Department Name" />
+        <div class="input-group-append">
+            <button class="btn btn-primary">Add New Department</button>
+        </div>
+    </div>
+</form>

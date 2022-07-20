@@ -1,0 +1,67 @@
+﻿@using Polls.Domain.ViewModel.Session
+@model AllSessionsIndexViewModel
+
+@{
+    ViewData["Title"] = "Sessions Index";
+}
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="mr-3 mb-3 pb-2" style="border-bottom:solid 3px white; max-width:max-content">
+                <h2>Sessions</h2>
+            </div>
+            <button class="btn btn-primary" data-bs-target="#modall" data-bs-toggle="modal">Add Session</button>
+            <partial name="PartialView/_Index" model="new CreateSessionViewModel()
+                { CourseId = ViewBag.CourseId, Viewbag = ViewBag.CourseId }"/>
+            <div class="mt-3 table-responsive" id="all">
+                <table class="table table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>TITLE</th>
+                            <th>Course</th>
+                            <th>Instructor</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Sessions)
+                        {        
+                            string baserow = "baserow" + item.Id.ToString();
+                            string modalid = "#modall" + item.Id.ToString();
+                            <tr id="@baserow">
+                                <td>@item.Id</td>
+                                <td>@item.Title</td>
+                                <td>@item.CourseName</td>
+                                <td>@item.InstructorName</td>
+                                <td>
+                                    <button class="btn btn-inverse-primary mr-1" data-bs-target="@modalid" data-bs-toggle="modal" data-id="@item.Id" data-viewbag="@ViewBag.CourseId">Edit</button>
+                                    <button class="btn btn-inverse-danger deletebtn" data-row="@baserow" data-id="@item.Id">Delete</button>
+                                </td>
+                                 <td>
+                                    <partial name="PartialView/_Edit" model="new EditSessionViewModel
+                                    {
+                                        Title = item.Title,
+                                        Id = item.Id,
+                                        CourseId = @item.CourseId,
+                                        Courses = Model.Courses,
+                                        Description = item.Description, 
+                                        InstructorId = item.InstructorId, 
+                                        Instructors = Model.Instructors,
+                                        Viewbag = @ViewBag.CourseId
+                                    }"/>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="PartialScripts/_Index"/>
+}

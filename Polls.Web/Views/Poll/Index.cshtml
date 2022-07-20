@@ -1,0 +1,52 @@
+﻿@using Polls.Domain.ViewModel.Poll
+@using Polls.Domain.ViewModel.Question
+@model List<BasePollForIndexViewModel>
+
+@{
+    ViewData["Title"] = "Poll Index";
+}
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="mr-3 mb-3 pb-2" style="border-bottom:solid 3px white; max-width:max-content">
+                <h2>Polls</h2>
+            </div>
+            <button class="btn btn-primary" data-bs-target="#modid" data-bs-toggle="modal">Add Questions</button>
+            <partial name="PartialView/_ModalAddQuesionAll" model="new QuestionCountViewModel()"/>
+            <div class="mt-3 table-responsive" id="all">
+                <table class="table table">
+                    <thead>
+                        <tr>
+                            <th>COURSE NAME</th>
+                            <th>QUESTION COUNT</th>
+                            <th>POLL STUDENTS</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {        
+                            string baserow = "baserow" + item.CourseId.ToString();
+                            <partial name="PartialView/_ModalAddQuesion" model="new QuestionCountViewModel() { CourseId = item.CourseId }"/>
+                            <tr id="@baserow">
+                                <td>Course (@item.CourseName)</td>
+                                <td>@item.QuestionsCount Question</td>
+                                <td><a asp-action="PollStudentsIndex"  asp-route-courseName="@item.CourseName" class="btn btn-outline-dark" asp-route-courseId="@item.CourseId">POLL STUDENTS : @item.PollsStudentCount</a></td>
+                                <td>
+                                    <button class="btn btn-inverse-primary addbtn" data-bs-target="#addmodid" data-bs-toggle="modal" data-id="@item.CourseId">Add</button>
+                                    <a class="btn btn-inverse-primary mr-1" asp-action="Edit" asp-controller="Question" asp-route-courseId="@item.CourseId" asp-route-courseName="@item.CourseName" asp-route-pollStudents="@item.PollsStudentCount">Edit</a>
+                                    <button class="btn btn-inverse-danger deletebtn" data-row="@baserow" data-id="@item.CourseId">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="PartialScripts/_Index" />
+}

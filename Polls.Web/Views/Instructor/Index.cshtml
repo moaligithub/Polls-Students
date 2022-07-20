@@ -1,0 +1,48 @@
+﻿@using Polls.Domain.ViewModel.Instructor
+@model List<InstructorIndexViewModel>
+
+@{
+    ViewData["Title"] = "Instructor Index";
+}
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="mr-3 mb-3 pb-2" style="border-bottom:solid 3px white; max-width:max-content">
+                <h2>Instructors</h2>
+            </div>
+            <a asp-action="Create" class="btn btn-primary">Add new Instructor</a>
+            <div class="mt-3 table-responsive" id="all">
+                <table class="table table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NAME</th>
+                            <th>JOB TITLE</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {        
+                            string baserow = "baserow" + item.Id.ToString();
+                            <tr id="@baserow">
+                                <td>@item.Id</td>
+                                <td>@item.FirstName @item.LastName</td>
+                                <td>@item.JobTitle</td>
+                                <td>
+                                    <a class="btn btn-inverse-primary mr-1" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                    <button class="btn btn-inverse-danger deletebtn" data-row="@baserow" data-id="@item.Id">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="PartialScripts/_Index" />
+}

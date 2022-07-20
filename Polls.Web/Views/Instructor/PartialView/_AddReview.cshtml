@@ -1,0 +1,38 @@
+﻿@using Polls.Domain.ViewModel.Instructor
+@model CreateInstructorReview
+
+<form asp-action="CreateReview" asp-controller="Instructor" enctype="multipart/form-data" method="post">
+    <div class="w-100 mt-3 mb-3">
+        <textarea class="form-control w-100" rows="7" asp-for="@Model.Description" placeholder="Description..."></textarea>
+    </div>
+    <div style="width-max-content;float:left">
+        @if(User.Identity.IsAuthenticated)
+        {
+            <input type="submit" class="btn btn-success" value="Submit"/>
+        }
+        else
+        {
+            <input type="submit" disabled class="btn btn-success" value="Submit"/>
+            <br />
+            <span class="text-danger">Log in to submit your review</span>
+        }
+    </div>
+    <div id="rate" style="float:right">
+        <input type="radio" id="star5" class="inp" name="rate" value="5" />
+        <label for="star5" title="text">5 stars</label>
+        
+        <input type="radio" id="star4" class="inp" name="rate" value="4" />
+        <label for="star4" title="text">4 stars</label>
+        
+        <input type="radio" id="star3" class="inp" name="rate" value="3" />
+        <label for="star3" title="text">3 stars</label>
+        
+        <input type="radio" id="star2" class="inp" name="rate" value="2" />
+        <label for="star2" title="text">2 stars</label>
+        
+        <input type="radio" id="star1" class="inp" name="rate" value="1" />
+        <label for="star1" title="text">1 star</label>
+    </div>
+    <input type="hidden" asp-for="@Model.InstructorId"/>
+    <input type="hidden" id="reviewinp" value="@Model.Review" asp-for="@Model.Review"/>
+</form>

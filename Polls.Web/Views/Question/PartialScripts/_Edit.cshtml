@@ -1,0 +1,62 @@
+﻿<script>
+    $(".checkbox").click(function() {
+        var inp = "#" + $(this).data("textinput");
+        var state = $(this).val();
+
+        if (state == "false") {
+            $(inp).prop('disabled', false);
+            $(this).prop('value', "true");
+        }
+        else{
+            $(inp).prop('disabled', true);
+            $(this).prop('value', "false");
+        }
+    });
+</script>
+
+<script>
+    var co;
+
+    $(document).ready(function(){
+        co = $("#count").val();
+    });
+         
+    $(".deletebtn").click(function() {
+        var Id = $(this).data("id");
+        var rowid = "#" + $(this).data("row");
+           
+        bootbox.confirm({
+            message: "Are you sure you want to Delete this Question?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if (result) { 
+                    $.ajax({
+                        url: '/api/Questions/One/' + Id,
+                        type: 'delete',
+                        data: { id: Id },
+                        success: function() {
+                            $(rowid).fadeOut(500);
+                            toastr.success("Delete Successfully", "Success");
+                            co--;
+                            if (co == 0){
+                                window.location.href = "/Poll/Index";
+                            }
+                        },
+                        error: function() {
+                            toastr.error("Delete Failed", "Error");
+                        }
+                    });
+                }
+            }
+        });        
+    });
+</script>

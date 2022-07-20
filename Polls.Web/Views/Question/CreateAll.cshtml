@@ -1,0 +1,157 @@
+﻿@using Polls.Domain.ViewModel.Question
+@model AllCreateQuestionsViewModel
+
+@{
+    ViewData["Title"] = "Create Questions";
+}
+
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Create /</span> Questions</h4>
+        <div class="row">
+            <form asp-action="CreateAll" method="post" enctype="multipart/form-data">
+                <input type="hidden" id="hid" value="@ViewBag.MaxQuesions"/>
+                <div class="col-md-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <button type="button" class="btn btn-primary w-100 text-white" id="addmodal" data-bs-target="#questionmod" data-bs-toggle="modal">Add Question</button>
+                                    <div class="modal fade" id="questionmod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel1">Add Question</h5>
+                                                    <button
+                                                        type="button"
+                                                        class="btn-close"
+                                                        data-bs-dismiss="modal"
+                                                        aria-label="Close"
+                                                    ></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col mb-3">
+                                                            <input type="text" class="form-control" maxlength="200" placeholder="Write Question.." id="InputId"/>
+                                                            <span class="text-danger">Max Length is 200</span>
+                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" id="btninput" class="btn btn-primary" data-bs-dismiss="modal">
+                                                        Add
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <a class="btn btn-outline-info w-100" data-bs-target="#coursemod" data-bs-toggle="modal">Add To Courses</a>
+                                    <div class="modal fade" id="coursemod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel1">Select Courses</h5>
+                                                    <button
+                                                        type="button"
+                                                        class="btn-close"
+                                                        data-bs-dismiss="modal"
+                                                        aria-label="Close"
+                                                    ></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col mb-3">
+                                                            <table class="table table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Course</th>
+                                                                        <th>Is Selected</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tbody">
+                                                                    @for (int i = 0; i < Model.Courses.Count(); i++)
+                                                                    {                          
+                                                                        <tr>
+                                                                            <td>
+                                                                                @Model.Courses[i].Title
+                                                                                <input type="hidden" asp-for="Courses[i].Id"/>
+                                                                                <input type="hidden" asp-for="Courses[i].Title"/>                                                                            
+                                                                            </td>
+                                                                            <td><input type="checkbox" asp-for="Courses[i].IsSelected" class="form-check-input"/></td>
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <a class="btn btn-outline-warning w-100 cuestionCount" disabled id="questions" data-bs-target="#allquesionmod" data-bs-toggle="modal">Questions : 0</a>
+                                    <div class="modal fade" id="allquesionmod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title cuestionCount" id="exampleModalLabel1">Questions : 0</h5>
+                                                    <button
+                                                        type="button"
+                                                        class="btn-close"
+                                                        data-bs-dismiss="modal"
+                                                        aria-label="Close"
+                                                    ></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col mb-3" id="divinput">
+                                                            @for (int i = 0; i < ViewBag.MaxQuesions; i++)
+                                                            {
+                                                                string InputId = "inp" + i.ToString();
+                                                                string LabelId = "lab" + i.ToString();
+                                                                <label class="form-label" hidden id="@LabelId"></label>
+                                                                <input type="text" hidden id="@InputId" class="form-control" asp-for="Questions[i]" value=""/>
+                                                            }
+                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <h3 class="text-center" style="font-family: 'Courier New', Courier, monospace;">only (<span class="text-danger">@ViewBag.MaxQuesions</span>) questions can be added</h3>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button type="submit" style="float:left" class="btn btn-primary me-2">Create</button>
+                                <a asp-action="Index" style="float:left" class="btn btn-outline-secondary">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="PartialScripts/_CreateAll" />
+}

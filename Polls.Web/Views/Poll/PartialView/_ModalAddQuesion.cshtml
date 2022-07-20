@@ -1,0 +1,31 @@
+﻿@using Polls.Domain.ViewModel.Question
+@model QuestionCountViewModel
+
+ <div class="modal fade" id="addmodid" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Choose Type</h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col mb-3" id="div">
+                        <form>
+                            <input type="hidden" asp-for="CourseId"/>
+                            <label asp-for="Count" class="form-label">Write Questions Count</label>
+                            <input type="number" min="1" max="200" asp-for="Count" placeholder="Write Questions Count.." id="inputMax" required class="form-control mb-2"/>
+                            <button class="btn btn-primary" asp-action="Create" asp-controller="Question">Go..</button>
+                            <span asp-validation-for="Count" class="text-danger"></span>
+                        </form>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

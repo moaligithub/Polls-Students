@@ -1,0 +1,95 @@
+﻿@using Polls.Domain.ViewModel.Instructor
+@model CreateInstructorViewModel
+
+@{
+    ViewData["Title"] = "Create Instructor";
+}
+
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Create /</span> Instructor</h4>
+        <div class="row">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div class="col-md-12">
+                    <div class="card mb-4">
+                        <h5 class="card-header">Instructor Details</h5>
+                        <div class="card-body">
+                            <div class="d-flex align-items-start align-items-sm-center gap-4">
+                                <img
+                                src="~/Dashboard/assets/img/Screenshot 2022-06-17 195427.png"
+                                alt="user-avatar"
+                                class="d-block rounded"
+                                height="100"
+                                width="100"
+                                id="uploadedAvatar"
+                                />
+                                <div class="button-wrapper">
+                                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                    <span class="d-none d-sm-block">Add photo</span>
+                                    <i class="bx bx-upload d-block d-sm-none"></i>
+                                    <input onchange="document.getElementById('uploadedAvatar').src = window.URL.createObjectURL(this.files[0])"
+                                    type="file"
+                                    asp-for="File"
+                                    id="upload"
+                                    class="account-file-input"
+                                    hidden
+                                    />
+                                    </label>
+                                    <p class="text-muted mb-0">Allowed JPG, or PNG. Max size of 1 MB</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-0" />
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <label asp-for="FirstName" class="form-label"></label>
+                                    <input asp-for="FirstName" class="form-control" placeholder="Write the first name.."/>
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label asp-for="LastName" class="form-label"></label>
+                                    <input asp-for="LastName" class="form-control" placeholder="Write the last name.."/>
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label asp-for="JobTitle" class="form-label"></label>
+                                    <input asp-for="JobTitle" class="form-control" placeholder="Write job title.."/>
+                                    <span asp-validation-for="JobTitle" class="text-danger"></span>
+                                </div>                                
+                                <div class="mb-3 col-md-6">
+                                    <label asp-for="Contact.Facebook" class="form-label"></label>
+                                    <input asp-for="Contact.Facebook" class="form-control" placeholder="Write facebook link.."/>
+                                    <span asp-validation-for="Contact.Facebook" class="text-danger"></span>
+                                </div>                                
+                                <div class="mb-3 col-md-6">
+                                    <label asp-for="Contact.Twitter" class="form-label"></label>
+                                    <input asp-for="Contact.Twitter" class="form-control" placeholder="Write twitter link.."/>
+                                    <span asp-validation-for="Contact.Twitter" class="text-danger"></span>
+                                </div>                                
+                                <div class="mb-3 col-md-6">
+                                    <label asp-for="Contact.LinkedIn" class="form-label"></label>
+                                    <input asp-for="Contact.LinkedIn" class="form-control" placeholder="Write linked in.."/>
+                                    <span asp-validation-for="Contact.LinkedIn" class="text-danger"></span>
+                                </div>                                
+                                <div class="mb-3 col-md-6">
+                                    <label asp-for="Contact.Email" class="form-label"></label>
+                                    <input asp-for="Contact.Email" class="form-control" placeholder="Write the email.."/>
+                                    <span asp-validation-for="Contact.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button type="submit" class="btn btn-primary me-2">Create</button>
+                                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

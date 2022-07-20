@@ -1,0 +1,99 @@
+﻿@using Polls.Domain.ViewModel.Course
+@model CreateCourseViewModel
+
+@{
+    ViewData["Title"] = "Edit Course";
+}
+
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Create /</span> Course</h4>
+        <div class="row">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id"/>
+                <div class="col-md-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <label asp-for="Title" class="form-label"></label>
+                                    <input asp-for="Title" class="form-control" placeholder="Write the Course name.."/>
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label class="form-label">Departments</label>
+                                    <button type="button" data-bs-target="#modalScrollable" data-bs-toggle="modal" class="btn btn-primary w-100">Add to Departments</button>
+                                    <div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalScrollableTitle">Departments</h5>
+                                                    <button
+                                                    type="button"
+                                                    class="btn-close"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                    ></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <table class="table table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>NAME</th>
+                                                                <th>IS SELECTED</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @for (var i = 0; i < Model.Departments.Count(); i++)
+                                                            {
+                                                                <tr>
+                                                                    <td>@Model.Departments[i].Name</td>
+                                                                    <td>
+                                                                        <input type="checkbox" class="form-check-input" asp-for="@Model.Departments[i].IsSelected"/>
+                                                                        <input type="hidden" asp-for="@Model.Departments[i].Id"/>
+                                                                    </td>
+                                                                </tr>
+                                                            }                                                        
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                @*<div class="mb-3 col-md-6">
+                                    <h3>Departments :</h3>
+                                    @for (var i = 0; i < Model.Departments.Count(); i++)
+                                    {
+                                        <input type="checkbox" class="form-check-input" asp-for="@Model.Departments[i].IsSelected"/>
+                                        <label asp-for="@Model.Departments[i].IsSelected" class="form-check-label">@Model.Departments[i].Name</label>
+                                        <br />
+                                        <input type="hidden" asp-for="@Model.Departments[i].Id"/>
+                                    }
+                                </div>*@
+                                <div class="mb-3 col-md-6">
+                                    <label asp-for="Description" class="form-label"></label>
+                                    <textarea asp-for="Description" class="form-control" placeholder="Description..." rows="7"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>                            
+                            </div>
+                            <div class="mt-2">
+                                <button type="submit" style="float:left" class="btn btn-primary me-2">Save Change</button>
+                                <a asp-action="Index" style="float:left" class="btn btn-outline-secondary">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
