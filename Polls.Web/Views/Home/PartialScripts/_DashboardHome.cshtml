@@ -1,0 +1,136 @@
+﻿<script>
+    $(document).ready(function() {
+
+        pieChart(0, 0, 0);
+        barChart(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+        $.ajax({
+            url: '/api/Questions/GetQuestionsStats',
+            dataType: 'json',
+            type: 'get',
+            success: function(result) {
+                $("#can2").empty().append(`<canvas class="m-3 mb-5" id="pie"></canvas>`);
+                pieChart(result.badPercentage, result.goodPercentage, result.veryGoodPercentage);
+            },
+            error : function(){
+                alert("Error");
+            }
+        });
+
+        GetQuestionsStatsInCourse($("#growthReportId").data("id"));
+
+    });
+
+    $(".down").click(function() {
+        var id = $(this).data("id");
+        var name = $(this).data("name");
+        GetQuestionsStatsInCourse(id);
+        $("#growthReportId").empty().append(name);
+    });
+</script>
+<script type="text/javascript">
+
+    function barChart(jun, feb, mar, apr, may, june, jul, aug, sept, oct, nov, dec) {
+        var barChart = document.getElementById('bar').getContext('2d');
+        var mybarChart = new Chart(barChart, {
+            type: 'bar', 
+            data: {
+                labels:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                datasets: [{
+                    label: 'Bad',
+                    data:[jun.badPercentage, feb.badPercentage, mar.badPercentage, apr.badPercentage, may.badPercentage, june.badPercentage, jul.badPercentage, aug.badPercentage, sept.badPercentage, oct.badPercentage, nov.badPercentage, dec.badPercentage],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Good',
+                    data:[jun.goodPercentage, feb.goodPercentage, mar.goodPercentage, apr.goodPercentage, may.goodPercentage, june.goodPercentage, jul.goodPercentage, aug.goodPercentage, sept.goodPercentage, oct.goodPercentage, nov.goodPercentage, dec.goodPercentage],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.5)',
+
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192)',
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Very Good',
+                    data:[jun.veryGoodPercentage, feb.veryGoodPercentage, mar.veryGoodPercentage, apr.veryGoodPercentage, may.veryGoodPercentage, june.veryGoodPercentage, jul.veryGoodPercentage, aug.veryGoodPercentage, sept.veryGoodPercentage, oct.veryGoodPercentage, nov.veryGoodPercentage, dec.veryGoodPercentage],
+                    backgroundColor: [
+                        'rgba(153, 102, 255, 0.5)',
+
+                    ],
+                    borderColor: [
+                        'rgba(153, 102, 255)',
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks:{
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    function pieChart(bad, good, veryGood){
+        var pieChart = document.getElementById('pie').getContext('2d');
+        var mypieChart = new Chart(pieChart, {
+            type: 'pie', 
+            data: {
+                labels:['Bad', 'Good', 'Very Good'],
+                datasets: [{
+                    label: 'Bad',
+                    data:[bad, good, veryGood],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(153, 102, 255, 0.5)',
+
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgba(75, 192, 192)',
+                        'rgba(153, 102, 255)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks:{
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    function GetQuestionsStatsInCourse(courseId) {
+        $.ajax({
+            url: '/api/Questions/GetQuestionsStats/' + courseId,
+            type: 'get',
+            dataType: 'json',
+            success: function(result) {
+                $("#can").empty().append(`<canvas class="m-3" id="bar"></canvas>`);
+                barChart(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9], result[10], result[11],)
+            },
+            error: function() { 
+                alert("error");
+            }
+        });
+    }
+</script>

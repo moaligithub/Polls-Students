@@ -11,6 +11,5 @@ namespace Polls.Domain.ViewModel.Instructor
     {
         [Display(Name = "Contact")]
         public ContactViewModel Contact { get; set; }
-        public byte[] ProfilePicture { get; set; }
     }
 }

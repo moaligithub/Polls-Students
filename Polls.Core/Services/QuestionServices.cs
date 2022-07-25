@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using NToastNotify;
+using Polls.Domain.Consts;
 using Polls.Domain.Interfaces.IServices;
 using Polls.Domain.Interfaces.IUnitOfWork;
 using Polls.Domain.Models;
@@ -167,6 +168,79 @@ namespace Polls.Core.Services
             List<Question> questions = await _unit.Question.FindAllAsync(q => q.CourseId == courseId);
 
             return _mapper.Map<List<EditQuestionViewModel>>(questions);
+        }
+
+        public async Task<QuestionStatsViewModel> GetQuestionsStatsAsync()
+        {
+            // Get Bad questions count
+            int BadQuestionsCount = await _unit.QuestionPolls.CountAsync(q 
+                => q.Rating == QuestionsRating.Bad && q.Poll.DateTime.Year == DateTime.Now.Year);
+
+            // Get Good questions count
+            int GoodQuestionsCount = await _unit.QuestionPolls.CountAsync(q 
+                => q.Rating == QuestionsRating.Good && q.Poll.DateTime.Year == DateTime.Now.Year);
+
+            // Get Very Good questions count
+            int VeryGoodQuestionsCount = await _unit.QuestionPolls.CountAsync(q 
+                => q.Rating == QuestionsRating.VeryGood && q.Poll.DateTime.Year == DateTime.Now.Year);
+
+            int AllCount = BadQuestionsCount + GoodQuestionsCount + VeryGoodQuestionsCount;
+
+            QuestionStatsViewModel viewModel = new QuestionStatsViewModel()
+            {
+                badPercentage = Convert.ToInt32(((double)BadQuestionsCount / AllCount) * 100),
+                goodPercentage = Convert.ToInt32(((double)GoodQuestionsCount / AllCount) * 100),
+                veryGoodPercentage = Convert.ToInt32(((double)VeryGoodQuestionsCount / AllCount) * 100),
+            };
+
+            return viewModel;
+        }
+
+        public async Task<List<QuestionStatsViewModel>> GetQuestionsStatsAsync(int courseId)
+        {
+            List<QuestionPoll> questions = await _unit.QuestionPolls.FindAllAsync(q
+                => q.Poll.CourseId == courseId && q.Poll.DateTime.Year == DateTime.Now.Year, 
+                new Expression<Func<QuestionPoll, object>>[] { q => q.Poll });
+
+            List<QuestionStatsViewModel> viewModels = new List<QuestionStatsViewModel>();
+
+            for (int i = 1; i <= 12; i++)
+            {
+                // Get Bad questions count
+                int BadQuestionsCount = questions.Where(q => q.Poll.DateTime.Month == i 
+                && q.Rating == QuestionsRating.Bad).Count();
+
+                // Get Good questions count
+                var GoodQuestionsCount = questions.Where(q => q.Poll.DateTime.Month == i
+                && q.Rating == QuestionsRating.Good).Count();
+
+                // Get Very Good questions count
+                int VeryGoodQuestionsCount = questions.Where(q => q.Poll.DateTime.Month == i
+                && q.Rating == QuestionsRating.VeryGood).Count();
+
+                int AllCount = BadQuestionsCount + GoodQuestionsCount + VeryGoodQuestionsCount;
+
+                QuestionStatsViewModel questionStats;
+
+                try
+                {
+                    questionStats = new QuestionStatsViewModel()
+                    {
+                        badPercentage = Convert.ToInt32(((double)BadQuestionsCount / AllCount) * 100),
+                        goodPercentage = Convert.ToInt32(((double)GoodQuestionsCount / AllCount) * 100),
+                        veryGoodPercentage = Convert.ToInt32(((double)VeryGoodQuestionsCount / AllCount) * 100),
+                    };
+                }
+                catch
+                {
+                    questionStats = new QuestionStatsViewModel();
+                }
+
+
+                viewModels.Add(questionStats);
+            }
+
+            return viewModels;
         }
 
         public bool UpDateQuestionsFromViewModel(List<EditQuestionViewModel> editQuestions)

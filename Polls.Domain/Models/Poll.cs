@@ -22,8 +22,11 @@ namespace Polls.Domain.Models
         [Required]
         public string StudentDepartment { get; set; }
 
+        [Required]
+        public DateTime DateTime { get; set; }
+
         // Foreign Key
-     
+
         [Required]
         public int CourseId { get; set; }
 

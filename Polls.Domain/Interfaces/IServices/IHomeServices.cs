@@ -15,7 +15,13 @@ namespace Polls.Domain.Interfaces.IServices
         /// </summary>
         /// <param name="InstructorsCount">Expresses Instructors Count</param>
         /// <param name="CoursesCount">Expresses Courses Count</param>
-        /// <returns>one of Home IndexViewModel</returns>
+        /// <returns>one of Home IndexViewModel.</returns>
         Task<HomeIndexViewModel> GetHomeIndexAsync(int InstructorsCount, int CoursesCount);
+
+        /// <summary>
+        ///     Get data for home dashboard page. 
+        /// </summary>
+        /// <returns>one of DashboardHomeViewModel.</returns>
+        Task<DashboardHomeViewModel> GetDashboardHomeAsync();
     }
 }

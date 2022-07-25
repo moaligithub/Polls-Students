@@ -1,7 +1,151 @@
-﻿@{
+﻿@using Polls.Domain.ViewModel.Home
+@model DashboardHomeViewModel
+
+@{
     ViewData["Title"] = "Dashboard";
 }
 
-<center>
-    <h1>Welcome, @User.FindFirst("FirstName").Value</h1>
-</center>
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row">
+            <div class="col-lg-8 mb-4 order-0">
+                <div class="card">
+                    <div class="dropdown p-3 d-inline" style="float:right;width:max-content">
+                        <button
+                        class="btn btn-sm btn-outline-primary dropdown-toggle"
+                        type="button"
+                        id="growthReportId"
+                        data-bs-toggle="dropdown"
+                        data-id="@Model.Courses[0].Id"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        >
+                        @Model.Courses[0].Title
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="growthReportId">
+                            @foreach(var item in Model.Courses)
+                            {
+                                <a class="dropdown-item down" href="javascript:void(0);" data-name="@item.Title" data-id="@item.Id">@item.Title</a>
+                            }
+                        </div>
+                    </div>
+                    <div id="can">
+                        <canvas class="m-3" id="bar"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 order-1">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body p-3">
+                            <h3 class="text-right">All Polls Stats In @DateTime.Now.Year</h3>
+                            <div id="can2">
+                                <canvas class="m-3 mb-5" id="pie"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-6 col-xl-6 order-0 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="p-0 m-0">
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Courses</h6>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">@Model.CoursesCount</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Sessions</h6>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">@Model.SessionsCount</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Instructors</h6>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">@Model.InstructorsCount</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="d-flex mb-4 pb-1" style="margin-bottom: -5px;">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Students Polls</h6>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">@Model.StudentsPollsCount</small>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6  order-2 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="card-title m-0 me-2">Highest rating for coaches</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="p-0 m-0">
+                            @foreach (var item in Model.Instructors)
+                            {
+                                string stringReview = new string(item.TotalReview.ToString().Take(3).ToArray());
+                                string review = stringReview.Length < 3 ? stringReview + ".0" : stringReview;
+                                
+                                <li class="d-flex mb-4 pb-1">
+                                    <div class="avatar flex-shrink-0 me-3">
+                                        <img src="data:image/*;base64,@Convert.ToBase64String(item.ProfilePicture)" alt="User" class="rounded" />
+                                    </div>
+                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                        <div class="me-2">
+                                            <small class="text-muted d-block mb-1">@item.JobTitle</small>
+                                            <h6 class="mb-0">@item.FirstName @item.LastName</h6>
+                                        </div>
+                                        <div class="user-progress d-flex align-items-center gap-1">
+                                            <h6 class="mb-0">@review</h6>
+                                            <span class="text-muted">&starf;</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="PartialScripts/_DashboardHome" />
+}

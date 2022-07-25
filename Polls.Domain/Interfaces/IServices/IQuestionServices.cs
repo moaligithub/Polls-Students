@@ -59,5 +59,18 @@ namespace Polls.Domain.Interfaces.IServices
         /// <param name="courseId">Expresses course id.</param>
         /// <returns>CreatePollStudentViewModel.</returns>
         Task<CreatePollStudentViewModel> GetQuestionForCreatePollAsync(int courseId);
+
+        /// <summary>
+        ///     Get questions stats.
+        /// </summary>
+        /// <returns>Questions stats type of QuestionStatsViewModel.</returns>
+        Task<QuestionStatsViewModel> GetQuestionsStatsAsync();
+
+        /// <summary>
+        ///     Get questions stats for one course by course id.
+        /// </summary>
+        /// <param name="courseId">Expresses Course Id</param>
+        /// <returns>List of Questions stats type of QuestionStatsViewModel.</returns>
+        Task<List<QuestionStatsViewModel>> GetQuestionsStatsAsync(int courseId);
     }
 }

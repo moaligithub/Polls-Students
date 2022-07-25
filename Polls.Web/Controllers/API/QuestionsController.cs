@@ -46,5 +46,17 @@ namespace Polls.Web.Controllers.API
 
             return Ok();
         }
+
+        [HttpGet("GetQuestionsStats")]
+        public async Task<IActionResult> GetQuestionsStats()
+        {
+            return Ok(await _questionServices.GetQuestionsStatsAsync());
+        }
+
+        [HttpGet("GetQuestionsStats/{courseId}")]
+        public async Task<IActionResult> GetQuestionsStats(int courseId)
+        {
+            return Ok(await _questionServices.GetQuestionsStatsAsync(courseId));
+        }
     }
 }

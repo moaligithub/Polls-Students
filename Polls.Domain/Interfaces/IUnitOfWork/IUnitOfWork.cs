@@ -46,6 +46,11 @@ namespace Polls.Domain.Interfaces.IUnitOfWork
         public IBaseRepository<Question> Question { get; }
 
         /// <summary>
+        ///     This Property expresses QuestionPolls repository. 
+        /// </summary>
+        public IBaseRepository<QuestionPoll> QuestionPolls { get; }
+
+        /// <summary>
         ///     This Property expresses Session repository. 
         /// </summary>
         public IBaseRepository<Session> Session { get; }

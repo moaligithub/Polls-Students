@@ -22,6 +22,7 @@ namespace Polls.EF.UnitOfWork
         private IBaseRepository<InstructorReview> _instructorReview;
         private IBaseRepository<Poll> _poll;
         private IBaseRepository<Question> _question;
+        private IBaseRepository<QuestionPoll> _questionPoll;
         private IBaseRepository<Session> _session;
 
         public UnitOfWork(ApplicationDbContext context)
@@ -67,6 +68,11 @@ namespace Polls.EF.UnitOfWork
         public IBaseRepository<InstructorReview> InstructorReview
         {
             get { return _instructorReview ?? (_instructorReview = new BaseRepository<InstructorReview>(_context)); }
+        }
+
+        public IBaseRepository<QuestionPoll> QuestionPolls
+        {
+            get { return _questionPoll ?? (_questionPoll = new BaseRepository<QuestionPoll>(_context)); }
         }
 
         public void Complete()

@@ -26,5 +26,6 @@ namespace Polls.Domain.ViewModel.Instructor
         [Display(Name = "JOB TITLE *")]
         [DataType(DataType.Text)]
         public string JobTitle { get; set; }
+        public byte[] ProfilePicture { get; set; }
     }
 }

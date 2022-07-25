@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Polls.Domain.Const;
 using Polls.Domain.Interfaces.IServices;
-using Polls.Web.Models;
+using Polls.Domain.ViewModel.Home;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -35,12 +35,7 @@ namespace Polls.Web.Controllers
         [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> IndexDashboard()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            return View(await _homeServices.GetDashboardHomeAsync());
         }
     }
 }

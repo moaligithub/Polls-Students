@@ -29,7 +29,6 @@ namespace Polls.Web.Controllers.API
 
             if (Result == 404)
                 return NotFound("Department is not found!");
-
             return Ok();
         }
 
